@@ -13,10 +13,10 @@ object Newtons extends App {
     def goodGuess(guess: Double): Boolean =
       abs(x - (guess * guess)) < offset
 
-    def improve(guess: Double): Double = (guess + (x/guess)) / 2
+    def improve(guess: Double): Double = (guess + (x / guess)) / 2
 
     def newtonsSqrt(guess: Double): Double = {
-      if(goodGuess(guess)) guess else newtonsSqrt(improve(guess))
+      if (goodGuess(guess)) guess else newtonsSqrt(improve(guess))
     }
 
     newtonsSqrt(1)
