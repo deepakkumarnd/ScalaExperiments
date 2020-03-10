@@ -1,4 +1,3 @@
-import java.time.temporal.WeekFields
 // Implicit looks for implicit values in the current scope and use it by default
 
 // Implicit parameters
@@ -38,5 +37,4 @@ object StringUtil {
 }
 
 import StringUtil.StringEnhancer
-
 "Education".withoutVowels
