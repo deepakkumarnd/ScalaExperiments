@@ -6,7 +6,7 @@ package example
 
 object TwoForOne extends App {
   print("Input a name >> ")
-  val line = scala.io.StdIn.readLine().strip()
+  val line = scala.io.StdIn.readLine.trim
 
   if (line.isEmpty) println("One for me and one for you")
   else println(s"One for $line and one for me")
