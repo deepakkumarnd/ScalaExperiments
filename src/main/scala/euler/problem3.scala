@@ -20,7 +20,7 @@ object problem3 extends App {
       }
     }
 
-    loop(2L, List(), num / 2L)
+    loop(2L, List(1, num), num / 2L)
   }
 
   def isPrime(l: Long): Boolean = {
