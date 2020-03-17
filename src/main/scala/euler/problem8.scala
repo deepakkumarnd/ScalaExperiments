@@ -54,7 +54,7 @@ object problem8 extends App {
                   |05886116467109405077541002256983155200055935729725
                   |71636269561882670428252483600823257530420752963450""".stripMargin.replaceAll("\n","")
 
-  def highestAdjacentProduct(num: String): Long = {
+  def highestAdjacentProduct(num: String, windowSize: Int): Long = {
     val digits = num.map(c => c.asDigit.toLong)
 
     @tailrec
@@ -69,12 +69,12 @@ object problem8 extends App {
       else maxProduct(start + 1, end + 1, acc, prod)
     }
 
-    maxProduct(0, 12)
+    maxProduct(0, windowSize - 1)
   }
 
   // To read a very big number as a number you can use
   // val bigNum: = BigInt(number)
 
-  val ans = highestAdjacentProduct(number)
+  val ans = highestAdjacentProduct(number, 13)
   println(ans) // 23514624000
 }
