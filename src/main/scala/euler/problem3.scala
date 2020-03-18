@@ -9,18 +9,18 @@ object problem3 extends App {
    */
   def factorize(num: Long): List[Long] = {
     @tailrec
-    def loop(el: Long, acc: List[Long], limit: Long): List[Long] = {
+    def loop(el: Long, acc: Set[Long], limit: Long): List[Long] = {
       if (el > limit) {
-        acc
+        acc.toList.sorted
       } else if (num % el == 0L) {
         val quotient = num / el
-        loop(el + 1L, acc ++ List(el, quotient).distinct, quotient)
+        loop(el + 1L, acc ++ Set(el, quotient), quotient)
       } else {
         loop(el + 1L, acc, limit)
       }
     }
 
-    loop(2L, List(1, num), num / 2L)
+    loop(2L, Set(1, num), num / 2L)
   }
 
   def isPrime(l: Long): Boolean = {
@@ -49,7 +49,6 @@ object problem3 extends App {
     else filterNonPrimes(factorize(num)).sorted(Ordering[Long].reverse)
   }
 
-  // val factors = primeFactors(600851475143L)
   val factors = primeFactors(600851475143L)
 
   factors match {
