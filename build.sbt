@@ -2,8 +2,8 @@ import Dependencies._
 
 ThisBuild / scalaVersion     := "2.12.10"
 ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / organization     := "io.github.basicobject"
+ThisBuild / organizationName := "BasicObject"
 
 lazy val cassandraDependencies = Seq(
   "com.datastax.oss" % "java-driver-core" % "4.5.0",
