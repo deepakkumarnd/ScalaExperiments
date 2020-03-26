@@ -1,6 +1,6 @@
 package euler
 
-import scala.annotation.tailrec
+import util.factorial
 
 
 /*
@@ -20,9 +20,6 @@ import scala.annotation.tailrec
 // Total paths will be C(n,r)
 
 object problem15 extends App {
-
-  @tailrec
-  def factorial(n: Int, acc: BigInt = BigInt(1)): BigInt = if (n > 1) factorial(n-1, n * acc) else acc
 
   def numberOfCombinations(n: Int, r: Int): BigInt = (factorial(n) / factorial(n-r)) / factorial(r)
 

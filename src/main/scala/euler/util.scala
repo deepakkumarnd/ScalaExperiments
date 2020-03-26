@@ -57,4 +57,7 @@ object util {
 
   def isPalindrome(num: Int): Boolean = reverse(num) == num
 
+  @tailrec
+  def factorial(n: Int, acc: BigInt = BigInt(1)): BigInt = if (n > 1) factorial(n-1, n * acc) else acc
+
 }
