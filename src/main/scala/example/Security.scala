@@ -21,7 +21,7 @@ object Security extends App {
     val passwordChars = password.toCharArray
     val saltBytes = salt.getBytes
     val hashedBytes = hashPassword(passwordChars, saltBytes, iterations, keyLength)
-    convertBytesToHex(hashedBytes)
+    bytesToHex(hashedBytes)
   }
 
   def hashPassword(password: Array[Char], salt: Array[Byte], iterations: Int, keyLength: Int): Array[Byte] = try {
@@ -35,11 +35,9 @@ object Security extends App {
       throw new RuntimeException(e)
   }
 
-  def convertBytesToHex(bytes: Seq[Byte]): String = {
+  def bytesToHex(bytes: Seq[Byte]): String = {
     val sb = new StringBuilder
-    for (b <- bytes) {
-        sb.append(String.format("%02x", Byte.box(b)))
-    }
+    bytes.foreach(b => sb.append(String.format("%02x", Byte.box(b))))
     sb.toString
   }
 
