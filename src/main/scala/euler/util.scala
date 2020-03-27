@@ -60,4 +60,8 @@ object util {
   @tailrec
   def factorial(n: Int, acc: BigInt = BigInt(1)): BigInt = if (n > 1) factorial(n-1, n * acc) else acc
 
+  @tailrec
+  def toDigits(num: BigInt, acc: Seq[Int] = Seq.empty[Int]): Seq[Int] =
+    if (num > 0) toDigits(num / 10, Seq((num % 10).toInt) ++ acc)
+    else acc
 }
