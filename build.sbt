@@ -14,8 +14,15 @@ lazy val root = (project in file("."))
   .settings(
     name := "ScalaExperiments",
     libraryDependencies += scalaTest % Test,
-    libraryDependencies ++= cassandraDependencies,
-    libraryDependencies += "com.google.guava" % "guava" % "28.2-jre"
+    libraryDependencies ++= cassandraDependencies
   )
 
+// Project euler solutions
+lazy val euler = project.settings(name := "ProjectEulerScala")
+
+// Google guava cache
+lazy val cache = project.settings(
+  name := "Google Guava Cache",
+  libraryDependencies += "com.google.guava" % "guava" % "28.2-jre"
+)
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
