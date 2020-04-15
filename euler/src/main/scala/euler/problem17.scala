@@ -1,6 +1,6 @@
 package euler
 
-import util.{toDigits, power}
+import common.Util.{toDigits, power}
 
 /*
   If the numbers 1 to 5 are written out in words: one, two, three, four, five,

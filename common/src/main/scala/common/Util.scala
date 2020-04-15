@@ -1,8 +1,8 @@
-package euler
+package common
 
 import scala.annotation.tailrec
 
-object util {
+object Util {
 
   def isPrime(l: Long): Boolean = {
     @tailrec
@@ -36,7 +36,7 @@ object util {
     @tailrec
     def loop(n: Int, divisor: Int, acc: List[Int]): List[Int] = {
       if (n == 1) acc
-      else if (n % divisor == 0) loop(n/divisor, 2, acc ++ List(divisor))
+      else if (n % divisor == 0) loop(n / divisor, 2, acc ++ List(divisor))
       else loop(n, divisor + 1, acc)
     }
 
@@ -58,7 +58,8 @@ object util {
   def isPalindrome(num: Int): Boolean = reverse(num) == num
 
   @tailrec
-  def factorial(n: Int, acc: BigInt = BigInt(1)): BigInt = if (n > 1) factorial(n-1, n * acc) else acc
+  def factorial(n: Int, acc: BigInt = BigInt(1)): BigInt =
+    if (n > 1) factorial(n - 1, n * acc) else acc
 
   @tailrec
   def toDigits(num: BigInt, acc: Seq[Int] = Seq.empty[Int]): Seq[Int] =

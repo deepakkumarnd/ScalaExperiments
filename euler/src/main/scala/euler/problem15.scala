@@ -1,7 +1,6 @@
 package euler
 
-import util.factorial
-
+import common.Util.factorial
 
 /*
 
@@ -10,7 +9,7 @@ import util.factorial
 
   How many such routes are there through a 20×20 grid?
 
-*/
+ */
 
 // Solution
 // For a grid with r x r dimension there are exactly r right moves and r down moves to reach the bottom right vertex
@@ -21,9 +20,11 @@ import util.factorial
 
 object problem15 extends App {
 
-  def numberOfCombinations(n: Int, r: Int): BigInt = (factorial(n) / factorial(n-r)) / factorial(r)
+  def numberOfCombinations(n: Int, r: Int): BigInt =
+    (factorial(n) / factorial(n - r)) / factorial(r)
 
-  def numberOfFullPaths(gridSize: Int): BigInt = numberOfCombinations(gridSize * 2, gridSize)
+  def numberOfFullPaths(gridSize: Int): BigInt =
+    numberOfCombinations(gridSize * 2, gridSize)
 
   val ans = numberOfFullPaths(20) // ans = 137846528820
 

@@ -18,11 +18,14 @@ lazy val root = (project in file("."))
   )
 
 // Project euler solutions
-lazy val euler = project.settings(name := "ProjectEulerScala")
+lazy val euler = project.settings(name := "ProjectEulerScala").dependsOn(common)
 
 // Google guava cache
 lazy val cache = project.settings(
   name := "Google Guava Cache",
   libraryDependencies += "com.google.guava" % "guava" % "28.2-jre"
 )
+
+// A common package to share code between projects
+lazy val common = project.settings(name := "Common")
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.

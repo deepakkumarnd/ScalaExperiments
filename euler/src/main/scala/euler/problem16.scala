@@ -1,6 +1,6 @@
 package euler
 
-import util.toDigits
+import common.Util.toDigits
 
 /*
 
@@ -8,10 +8,10 @@ import util.toDigits
 
 What is the sum of the digits of the number 21000?
 
-*/
+ */
 
 object problem16 extends App {
   val base = BigInt(2)
   val ans = toDigits(base.pow(1000)).sum
-  println(ans)  // 1366
+  println(ans) // 1366
 }
