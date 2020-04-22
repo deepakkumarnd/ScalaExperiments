@@ -28,4 +28,15 @@ lazy val cache = project.settings(
 
 // A common package to share code between projects
 lazy val common = project.settings(name := "Common")
+
+lazy val postgres = project.settings(
+  name := "Postgres",
+  scalacOptions += "-Ypartial-unification",
+  libraryDependencies ++= Seq(
+    "org.tpolecat" %% "doobie-core" % "0.8.8",
+    "org.tpolecat" %% "doobie-postgres" % "0.8.8"
+  )
+)
+
+lazy val gameoflife = project.settings(name := "Conways Game of Life")
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
