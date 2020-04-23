@@ -16,6 +16,7 @@ lazy val root = (project in file("."))
     libraryDependencies += scalaTest % Test,
     libraryDependencies ++= cassandraDependencies
   )
+  .dependsOn(common)
 
 // Project euler solutions
 lazy val euler = project.settings(name := "ProjectEulerScala").dependsOn(common)
