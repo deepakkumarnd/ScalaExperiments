@@ -40,4 +40,11 @@ lazy val postgres = project.settings(
 )
 
 lazy val gameoflife = project.settings(name := "Conways Game of Life")
+lazy val wsclient = project.settings(
+  name := "WsClient standalone mode",
+  libraryDependencies ++= Seq(
+    "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.1.2",
+    "com.typesafe.play" %% "play-ws-standalone-json" % "2.1.2"
+  )
+)
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
