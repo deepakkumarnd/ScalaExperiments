@@ -3,6 +3,7 @@
 - Project euler problems
 - Conway's game of life
 - Google guava cache
-- Postgres connection using Doobie (In Progress)
-- Sharing code between two projects usind dependency
+- Postgres connection using Doobie
+- Sharing code between two projects using dependency
+- Using Play WSCLient in standalone mode
 - Project setup using SBT
