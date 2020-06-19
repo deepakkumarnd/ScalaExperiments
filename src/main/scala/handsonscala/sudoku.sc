@@ -27,6 +27,17 @@ def isValidSudoku(grid: Seq[Seq[Int]]): Boolean = {
   })
 }
 
+
+def renderSudoku(grid: Seq[Seq[Int]]): Unit = {
+  val border = ("\n" + ("+-----" * 9) + "+\n")
+  val board = Seq(border,
+    grid
+      .map(seq => "|  " + seq.mkString("  |  ") + "  |")
+      .mkString(border),
+    border).mkString("")
+  println(board)
+}
+
 // solved grid
 
 val grid1 = Seq(
@@ -86,3 +97,5 @@ isValidSudoku(grid1)
 isValidSudoku(grid2)
 isValidSudoku(grid3)
 isValidSudoku(grid4)
+
+renderSudoku(grid1)
