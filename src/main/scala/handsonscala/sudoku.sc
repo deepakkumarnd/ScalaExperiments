@@ -29,13 +29,26 @@ def isValidSudoku(grid: Seq[Seq[Int]]): Boolean = {
 
 
 def renderSudoku(grid: Seq[Seq[Int]]): Unit = {
-  val border = ("\n" + ("+-----" * 9) + "+\n")
-  val board = Seq(border,
+  val vSep = "  |  "
+  val hSep = "\n" + ("+-----------" * 3) + "+\n"
+  val space = "  "
+  val lBorder = "|  "
+  val rBorder = "  |"
+
+  val gridStr =
     grid
-      .map(seq => "|  " + seq.mkString("  |  ") + "  |")
-      .mkString(border),
-    border).mkString("")
-  println(board)
+      .map(seq =>
+        lBorder +
+        seq
+          .grouped(3)
+          .map(_.mkString(space))
+          .mkString(vSep) +
+        rBorder)
+      .grouped(3)
+      .map(_.mkString("\n"))
+      .mkString(hSep)
+
+  println(hSep + gridStr + hSep)
 }
 
 // solved grid
