@@ -15,19 +15,29 @@ import scala.util.control.NonFatal
 import scala.jdk.CollectionConverters._
 import scala.compat.java8.FutureConverters.CompletionStageOps
 import scala.concurrent.duration._
+import com.typesafe.config.ConfigFactory
 
 case class User(id: UUID, name: String, age: Int)
 
 object CassandraDemo extends App {
-  val keyspace = "mykeyspace"
+
+  val config = ConfigFactory.parseResources("cassandra.conf")
+  val keyspace = config.getString("datastax-java-driver.basic.session-keyspace")
   val table = "users"
 
   def getSession: CqlSession = {
     CqlSession
       .builder()
       .addContactPoint(new InetSocketAddress("127.0.0.1", 9042))
-      .withAuthCredentials("cassandra", "cassandra")
-      .withLocalDatacenter("Cassandra")
+      .withAuthCredentials(
+        config.getString(
+          "datastax-java-driver.advanced.auth-provider.username"
+        ),
+        config.getString("datastax-java-driver.advanced.auth-provider.password")
+      )
+      .withLocalDatacenter(
+        config.getString("datastax-java-driver.basic.datacenter")
+      )
       .withKeyspace(keyspace)
       .build()
   }
