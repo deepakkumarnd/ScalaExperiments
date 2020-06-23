@@ -1,6 +1,6 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.12.10"
+ThisBuild / scalaVersion := "2.13.1"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / organization := "io.github.basicobject"
 ThisBuild / organizationName := "BasicObject"
@@ -47,4 +47,13 @@ lazy val wsclient = project.settings(
     "com.typesafe.play" %% "play-ws-standalone-json" % "2.1.2"
   )
 )
+
+lazy val cassandra = project.settings(
+  name := "Cassandra",
+  libraryDependencies ++= Seq(
+    "com.datastax.oss" % "java-driver-core" % "4.5.1",
+    "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.1"
+  )
+)
+
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
