@@ -9,7 +9,6 @@ val input = Seq("Deepak", "12", "true")
 //parseFromString[Int](input(1))
 //parseFromString[Boolean](input(2))
 
-
 trait StrParser[T] {
   def parse(s: String): T
 }

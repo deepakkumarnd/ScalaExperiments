@@ -29,6 +29,20 @@ def retryRecursive[T](remainingTries: Int)(fn: => T): T = {
   }
 }
 
+@scala.annotation.tailrec
+def retryWithExponentialBackOff[T](max: Int, attempt: Int = 1)(fn: => T): T = {
+  try { fn }
+  catch {
+    case e: Throwable =>
+      if (attempt < max) {
+        val delay = math.pow(2, attempt).toInt * 10 // 20, 40, 80 millis...
+        println(s"Attempt #$attempt failed retrying after $delay milliseconds")
+        Thread.sleep(delay)
+        retryWithExponentialBackOff(max, attempt + 1)(fn)
+      } else throw e
+  }
+}
+
 retry(3){
   println("This block completed successfully")
 }
@@ -50,6 +64,13 @@ retryRecursive(3) {
 
 try {
   retryRecursive(3) {
+    throw new RuntimeException("Something went wrong")
+  }
+} catch { case e: Throwable => "ignore" }
+
+
+try {
+  retryWithExponentialBackOff(10) {
     throw new RuntimeException("Something went wrong")
   }
 } catch { case e: Throwable => "ignore" }
