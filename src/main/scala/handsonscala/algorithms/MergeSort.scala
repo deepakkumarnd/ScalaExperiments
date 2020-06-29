@@ -1,7 +1,5 @@
 package handsonscala.algorithms
 
-import Numeric._
-
 object MergeSort extends App {
   def mergeSort[T](list: Seq[T])(implicit n: Numeric[T]): Seq[T] = {
 
