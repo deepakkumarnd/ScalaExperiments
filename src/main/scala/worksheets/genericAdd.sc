@@ -18,6 +18,9 @@ object Addable {
     override def plus(a: Complex[T], b: Complex[T]): Complex[T] = Complex(add(a.i, b.i), add(a.j, b.j))
   }
 
+
+
+
   // This will add an operator +++ for any value of type T that is Addable
   implicit class AddableOps[T](a: T)(implicit adder: Addable[T]) {
     def +++(b: T): T = adder.plus(a, b)
