@@ -14,7 +14,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "ScalaExperiments",
     libraryDependencies += scalaTest % Test,
-    libraryDependencies ++= cassandraDependencies
+    libraryDependencies ++= cassandraDependencies,
+    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
   )
   .dependsOn(common)
 
