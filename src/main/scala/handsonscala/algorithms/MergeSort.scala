@@ -1,7 +1,7 @@
 package handsonscala.algorithms
 
 object MergeSort extends App {
-  def mergeSort[T](list: Seq[T])(implicit n: Numeric[T]): Seq[T] = {
+  def mergeSort[T](list: Seq[T])(implicit n: Ordering[T]): Seq[T] = {
 
     @scala.annotation.tailrec
     def merge(left: Seq[T], right: Seq[T], acc: Seq[T]): Seq[T] =
@@ -25,5 +25,6 @@ object MergeSort extends App {
 
   println(mergeSort(Seq(4, 0, 1, 5, 2, 3))) // Int
   println(mergeSort(Seq(4, 0, 1, 5, 2.4, 3.2))) // Double
+  println(mergeSort(Seq("Deepak", "Amrutha"))) // Double
 
 }
