@@ -27,10 +27,15 @@ object StrParer {
 
   def parseFromString[T](s: String)(implicit parser: StrReader[T]): T =
     parser.parse(s)
+
+  implicit class StringParser(s: String) {
+    def parseString[T](implicit p: StrReader[T]): T = p.parse(s)
+  }
 }
 
 object Demo extends App {
   import StrParer._
 
   println(parseFromString[Seq[Boolean]]("[true,false,true]"))
+  println("[true,false,true]".parseString[Seq[Boolean]])
 }
