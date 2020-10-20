@@ -1,6 +1,7 @@
 package example
 
 import Ordering.Implicits._
+import scala.annotation.tailrec
 
 case class BSTree[T: Ordering](
     left: Option[BSTree[T]],
@@ -13,22 +14,39 @@ case class BSTree[T: Ordering](
   def contains(value: T): Boolean =
     BSTree.contains(Some(this), value)
 
+  def map(fn: T => T): BSTree[T] = {
+    def mapF(bst: Option[BSTree[T]]): Option[BSTree[T]] = bst.map { subTree =>
+      BSTree(
+        left = mapF(subTree.left),
+        right = mapF(subTree.right),
+        value = fn(subTree.value)
+      )
+    }
+
+    mapF(Some(this)).get
+  }
+
   def delete(value: T): BSTree[T] =
     if (contains(value))
       BSTree.delete(Some(this), value).get
     else this
+
+  override def toString(): String =
+    value.toString + " " + left.getOrElse("").toString + right
+      .getOrElse("")
+      .toString
 }
 
 object BSTree {
   private def inOrderTraversal[T](
       subtree: Option[BSTree[T]],
       action: BSTree[T] => Unit
-  ): Unit = {
-    subtree.map { tree =>
-      inOrderTraversal(tree.left, action)
-      action(tree)
-      inOrderTraversal(tree.right, action)
-    }
+  ): Unit = subtree match {
+    case Some(subTree) =>
+      inOrderTraversal(subTree.left, action)
+      action(subTree)
+      inOrderTraversal(subTree.right, action)
+    case None => ()
   }
 
   def traverse[T](
@@ -37,21 +55,17 @@ object BSTree {
     inOrderTraversal(Some(bst), action)
 
   def insert[T: Ordering](bst: BSTree[T], value: T): BSTree[T] = {
-    if (value < bst.value) {
-      val newLeft = bst.left
-        .map(subTree => insert(subTree, value))
-        .orElse(Some(BSTree(None, None, value)))
-
-      bst.copy(left = newLeft)
-    } else if (value > bst.value) {
-      val newRight = bst.right
-        .map(subTree => insert(subTree, value))
-        .orElse(Some(BSTree(None, None, value)))
-
-      bst.copy(right = newRight)
-    } else {
-      bst
+    def insertValue(bst: Option[BSTree[T]]) = bst match {
+      case Some(subTree) => Some(insert(subTree, value))
+      case None          => Some(BSTree(None, None, value))
     }
+
+    if (value < bst.value)
+      bst.copy(left = insertValue(bst.left))
+    else if (value > bst.value)
+      bst.copy(right = insertValue(bst.right))
+    else
+      bst
   }
 
   def delete[T: Ordering](bst: Option[BSTree[T]], value: T): Option[BSTree[T]] =
@@ -110,25 +124,40 @@ object BSTree {
       case None    => false
       case Some(_) => true
     }
+
+  def fromSeq[T: Ordering](seq: Seq[T]): Option[BSTree[T]] = {
+    def buildFromSeq(seq: Seq[T], acc: BSTree[T]): BSTree[T] =
+      seq.headOption match {
+        case Some(value) => buildFromSeq(seq.tail, acc.insert(value))
+        case None        => acc
+      }
+
+    seq.headOption.map(value =>
+      buildFromSeq(seq.tail, BSTree(None, None, value))
+    )
+  }
 }
 
-object BstTree extends App {
-  val bst = BSTree(None, None, 11)
-    .insert(6)
-    .insert(8)
-    .insert(19)
-    .insert(4)
-    .insert(10)
-    .insert(5)
-    .insert(17)
-    .insert(43)
-    .insert(49)
-    .insert(31)
+object BstTreeDemo extends App {
+
+  val seq = Seq(11, 6, 8, 19, 4, 10, 5, 17, 43, 49, 31)
+
+  val bst = BSTree.fromSeq(seq).get
+
+  println(seq)
+  println(bst)
 
   BSTree.traverse(bst) { tree => print(tree.value + " ") }
   println("")
   println(bst.contains(31))
   println(bst.contains(115))
+
+  val newBst = bst.map { value => value * value }
+
+  println(newBst)
+  BSTree.traverse(newBst) { tree => print(tree.value + " ") }
+
+  println("\n")
 
   val newTree = bst.delete(11).delete(31).delete(4)
   BSTree.traverse(newTree) { tree => print(tree.value + " ") }
