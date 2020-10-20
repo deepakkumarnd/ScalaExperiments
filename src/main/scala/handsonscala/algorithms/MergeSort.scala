@@ -1,5 +1,7 @@
 package handsonscala.algorithms
 
+import Ordering.Implicits._
+
 object MergeSort extends App {
   def mergeSort[T](list: Seq[T])(implicit n: Ordering[T]): Seq[T] = {
 
@@ -10,7 +12,7 @@ object MergeSort extends App {
         case (_, Nil)   => acc ++ left
         case (Nil, _)   => acc ++ right
         case _ =>
-          if (Ordering[T].lt(left.head, right.head))
+          if (left.head < right.head)
             merge(left.tail, right, acc :+ left.head)
           else merge(left, right.tail, acc :+ right.head)
       }
