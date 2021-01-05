@@ -58,4 +58,12 @@ lazy val cassandra = project.settings(
   )
 )
 
+lazy val aerospike = project.settings(
+  name := "Aerospike",
+  libraryDependencies ++= Seq(
+    "com.aerospike" % "aerospike-client" % "latest.integration",
+    "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.1"
+  )
+)
+
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
