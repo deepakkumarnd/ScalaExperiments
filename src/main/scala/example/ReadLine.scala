@@ -4,7 +4,7 @@ package example
 // 1. how to read input
 // 2. how to interpolate variables in a string
 
-object TwoForOne extends App {
+object ReadLine extends App {
   print("Input a name >> ")
   val line = scala.io.StdIn.readLine.trim
 
