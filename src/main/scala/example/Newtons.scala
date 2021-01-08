@@ -1,5 +1,7 @@
 package example
 
+import scala.annotation.tailrec
+
 // Find square root of a number using newtons method
 
 object Newtons extends App {
@@ -8,13 +10,12 @@ object Newtons extends App {
 
   def sqrt(x: Double): Double = {
 
-    val offset: Double = if (x < 1) x / 1000 else 0.001
-
     def goodGuess(guess: Double): Boolean =
-      abs(x - (guess * guess)) < offset
+      abs(x - (guess * guess)) / x < 0.01
 
     def improve(guess: Double): Double = (guess + (x / guess)) / 2
 
+    @tailrec
     def newtonsSqrt(guess: Double): Double = {
       if (goodGuess(guess)) guess else newtonsSqrt(improve(guess))
     }
@@ -26,4 +27,8 @@ object Newtons extends App {
   println(sqrt(400))
   println(sqrt(0.0004))
   println(sqrt(0.00004))
+  // Very large number
+  println(sqrt(2e60))
+  // Very small numbers
+  println(sqrt(2e-6))
 }

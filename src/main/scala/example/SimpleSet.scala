@@ -16,7 +16,6 @@ trait SimpleSet[A] extends (A => Boolean) {
   def -(elem: A): SimpleSet[A]
   def --(anotherSet: SimpleSet[A]): SimpleSet[A]
   def &(anotherSet: SimpleSet[A]): SimpleSet[A]
-  def unary_! : SimpleSet[A]
 }
 
 object SimpleSet {
@@ -54,20 +53,6 @@ class EmptySet[A] extends SimpleSet[A] {
 
   override def &(anotherSet: SimpleSet[A]): SimpleSet[A] = this
 
-  override def unary_! : SimpleSet[A] = ???
-}
-
-class ProperySet[A](property: => Boolean) extends SimpleSet[A] {
-  override def contains(elem: A): Boolean =
-  def +(elem: A): SimpleSet[A]
-  def ++(anotherSet: SimpleSet[A]): SimpleSet[A]
-  def map[B](mapF: A => B): SimpleSet[B]
-  def flatMap[B](mapF: A => SimpleSet[B]): SimpleSet[B]
-  def filter(predicate: A => Boolean): SimpleSet[A]
-  def foreach(func: A => Unit): Unit
-  def -(elem: A): SimpleSet[A]
-  def --(anotherSet: SimpleSet[A]): SimpleSet[A]
-  def &(anotherSet: SimpleSet[A]): SimpleSet[A]
 }
 
 class NonEmptySet[A](head: A, tail: SimpleSet[A]) extends SimpleSet[A] {
