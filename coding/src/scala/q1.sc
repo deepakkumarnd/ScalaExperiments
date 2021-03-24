@@ -1,4 +1,5 @@
 import scala.annotation.tailrec
+import scala.collection.immutable.Queue
 
 /**
  * Given an m*n matrix, print all possible paths originating from (0,0) and ending at (m-1, n-1). The directions can be assumed to be only right (R) and down (D)
@@ -25,11 +26,11 @@ def findPathsV1(m: Int, n: Int): Unit = {
  */
 def findPathV2(m: Int, n: Int): Unit = {
   @tailrec
-  def traverse(queue: Seq[(Int, Int, String)], solutions: Seq[String]): Unit = {
-    queue match {
-      case Nil =>
-        solutions.foreach(println)
-      case head :: tail =>
+  def traverse(queue: Queue[(Int, Int, String)], solutions: Seq[String]): Unit = {
+    if (queue.isEmpty)
+      solutions.foreach(println)
+    else {
+        val (head, tail) = queue.dequeue
         val (x, y, path) = head
 
         if ((x == m - 1) && (y == n -1)) {
@@ -37,12 +38,12 @@ def findPathV2(m: Int, n: Int): Unit = {
         } else if ((x > m) || (y > n)) {
           traverse(tail, solutions)
         } else {
-          traverse(tail ++ Seq((x + 1, y, path + "R"), (x, y + 1, path + "D")), solutions)
+          traverse(tail ++ Queue((x + 1, y, path + "R"), (x, y + 1, path + "D")), solutions)
         }
     }
   }
 
-  traverse(Seq((0, 0, "")), Seq.empty[String])
+  traverse(Queue((0, 0, "")), Seq.empty[String])
 }
 
 //findPathsV1(3, 3)
