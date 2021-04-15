@@ -66,4 +66,12 @@ lazy val aerospike = project.settings(
   )
 )
 
+lazy val kafka = project.settings(
+  name := "Kafka",
+  libraryDependencies ++= Seq(
+    "org.apache.kafka" % "kafka-clients" % "2.7.0",
+    "org.slf4j" % "slf4j-simple" % "1.7.30"
+  )
+)
+
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
