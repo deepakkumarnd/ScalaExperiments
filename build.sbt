@@ -70,8 +70,20 @@ lazy val kafka = project.settings(
   name := "Kafka",
   libraryDependencies ++= Seq(
     "org.apache.kafka" % "kafka-clients" % "2.7.0",
-    "org.slf4j" % "slf4j-simple" % "1.7.30"
+    "org.slf4j" % "slf4j-simple" % "1.7.30",
+    "com.typesafe.akka" %% "akka-stream-kafka" % "2.0.7"
   )
 )
 
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+lazy val akkaVersion = "2.6.14"
+lazy val scalaTestVersion = "3.2.7"
+
+lazy val akkastream = project.settings(
+  name := "akkastream",
+  libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+    "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion,
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+    "org.scalatest" %% "scalatest" % scalaTestVersion
+  )
+)
