@@ -14,6 +14,7 @@ import akka.actor.{
 import akka.util.Timeout
 
 import scala.concurrent.ExecutionContext
+import scala.language.postfixOps
 
 object AkkaRecap extends App {
   class SimpleActor extends Actor with Stash with ActorLogging {

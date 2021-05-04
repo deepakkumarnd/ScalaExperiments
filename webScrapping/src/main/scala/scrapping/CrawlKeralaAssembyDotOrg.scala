@@ -1,7 +1,7 @@
 package scrapping
 
 import akka.actor.ActorSystem
-import akka.stream.scaladsl.{FileIO, Flow, Sink, Source}
+import akka.stream.scaladsl.{FileIO, Source}
 import akka.util.ByteString
 import org.jsoup._
 import org.jsoup.nodes.Document
@@ -25,17 +25,16 @@ object CrawlKeralaAssembyDotOrg extends App {
 
   val output = Paths.get("election-data.json")
 
-  val pipeline =
-    urlSource
-      .mapAsync(8)(downloadDocument(_))
-      .async
-      .map(DocumentParser.parse)
-      .async
-      .map { c => ByteString(Json.toJson(c).toString() + "\n") }
-      .runWith(FileIO.toPath(output))
-      .recover { exception => exception.getMessage }
-      .onComplete { _ =>
-        system.terminate()
-        println("Completed")
-      }
+  urlSource
+    .mapAsync(8)(downloadDocument)
+    .async
+    .map(DocumentParser.parse)
+    .async
+    .map { c => ByteString(Json.toJson(c).toString() + "\n") }
+    .runWith(FileIO.toPath(output))
+    .recover { exception => exception.getMessage }
+    .onComplete { _ =>
+      system.terminate()
+      println("Completed")
+    }
 }

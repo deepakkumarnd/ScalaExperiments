@@ -87,3 +87,22 @@ lazy val akkastream = project.settings(
     "org.scalatest" %% "scalatest" % scalaTestVersion
   )
 )
+
+lazy val akka = project.settings(
+  name := "akka",
+  libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+    "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion % Test
+  )
+)
+
+lazy val designPatterns = project.settings(name := "design-patterns")
+lazy val webScrapping = project.settings(
+  name := "web-scrapping",
+  libraryDependencies ++= Seq(
+    "org.seleniumhq.selenium" % "selenium-java" % "3.141.59",
+    "com.typesafe.play" %% "play-ws-standalone-json" % "2.1.2",
+    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+    "org.jsoup" % "jsoup" % "1.13.1"
+  )
+)

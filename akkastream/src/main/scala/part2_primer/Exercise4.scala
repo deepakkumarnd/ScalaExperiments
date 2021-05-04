@@ -13,6 +13,7 @@ import akka.stream.scaladsl.{
 }
 
 import scala.concurrent.duration.DurationInt
+import scala.language.postfixOps
 
 object Exercise4 extends App {
   implicit val system = ActorSystem("Exercise4")
