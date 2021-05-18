@@ -33,13 +33,9 @@ def findPathV2(m: Int, n: Int): Unit = {
         val (head, tail) = queue.dequeue
         val (x, y, path) = head
 
-        if ((x == m - 1) && (y == n -1)) {
-          traverse(tail, solutions :+ path)
-        } else if ((x > m) || (y > n)) {
-          traverse(tail, solutions)
-        } else {
-          traverse(tail ++ Queue((x + 1, y, path + "R"), (x, y + 1, path + "D")), solutions)
-        }
+        if ((x == m - 1) && (y == n -1)) traverse(tail, solutions :+ path)
+        else if ((x > m) || (y > n)) traverse(tail, solutions)
+        else traverse(tail ++ Queue((x + 1, y, path + "R"), (x, y + 1, path + "D")), solutions)
     }
   }
 
