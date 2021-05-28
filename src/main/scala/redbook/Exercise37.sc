@@ -40,8 +40,6 @@ sum2(a1)
 product2(a2)
 
 
-// foldRight means that fold is applied towards the right type B
-
 // Short circuit might not be possible to generalise in foldRight
 
 // calling with Nil and Cons will return the same a1
