@@ -9,8 +9,9 @@ sealed trait Stream[+A] {
   def forAll(p: A => Boolean): Boolean
   def map[B](f: A => B): Stream[B]
   def filter(f: A => Boolean): Stream[A]
-//  def append[B >: A](b: B): Stream[A]
-//  def flatMap[B](f: A => Stream[B]): Stream[B]
+  def append[B >: A](b: => Stream[B]): Stream[B]
+  def flatMap[B](f: A => Stream[B]): Stream[B]
+  def find(p: A => Boolean): Option[A]
 }
 
 object Stream {
@@ -47,8 +48,13 @@ case object Empty extends Stream[Nothing] {
 
   override def filter(f: Nothing => Boolean): Stream[Nothing] = Stream.empty
 
+  override def append[B >: Nothing](b: => Stream[B]): Stream[B] = b
+
   override def flatMap[B](f: Nothing => Stream[B]): Stream[B] = Stream.empty[B]
+
+  override def find(p: Nothing => Boolean): Option[Nothing] = None
 }
+
 case class Cons[+A](head: () => A, tail: () => Stream[A]) extends Stream[A] {
   override def take(n: Int): Stream[A] = {
     if (n > 0) Stream.cons(this.head(), this.tail().take(n - 1))
@@ -78,6 +84,11 @@ case class Cons[+A](head: () => A, tail: () => Stream[A]) extends Stream[A] {
 
   override def filter(f: A => Boolean): Stream[A] = if(f(head())) Stream.cons(head(), tail().filter(f)) else tail().filter(f)
 
+  override def append[B >: A](b: => Stream[B]): Stream[B] = Stream.cons(head(), tail().append(b))
+
+  override def flatMap[B](f: A => Stream[B]): Stream[B] = f(head()).append(tail().flatMap(f))
+
+  override def find(p: A => Boolean): Option[A] = filter(p).headOption
 }
 
 val s = Stream(1,2,3,4,5)
@@ -115,3 +126,32 @@ headOption(Stream.empty)
 s.map(_* 2).toList
 
 s.filter(_%2 ==1).toList
+
+s.append(Stream(10)).toList
+
+Stream(2,3).flatMap((x) => Stream(x%2, x%3)).toList
+
+// map using foldRight
+
+def map[A, B](stream: Stream[A])(f: A => B): Stream[B] = stream.foldRight(Stream.empty[B])((a, b) => Stream.cons(f(a), b))
+
+map(s)(_ * 2).toList
+
+// filter using foldRight
+
+def filter[A](stream: Stream[A])(p: A => Boolean): Stream[A] = stream.foldRight(Stream.empty[A])((a, b) => if(p(a)) Stream.cons(a, b) else b)
+
+filter(s)(_ % 2 == 0).toList
+
+// append using foldRight
+def append[A](stream1: Stream[A], stream2: => Stream[A]): Stream[A] = stream1.foldRight(stream2)((a, b) => Stream.cons(a, b))
+
+append(Stream(1,2,3), Stream(4,5)).toList
+
+// flatMap using foldRight
+
+def flatMap[A, B](stream: Stream[A])(f: A => Stream[B]): Stream[B] = stream.foldRight(Stream.empty[B])((a, b) => f(a).append(b))
+flatMap(Stream(2,3))((x) => Stream(x%2, x%3)).toList
+
+
+Stream(1,2,3,4).map(_ + 10).filter(_ % 2 == 0)
