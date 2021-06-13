@@ -70,7 +70,7 @@ case class Cons[+A](head: () => A, tail: () => Stream[A]) extends Stream[A] {
 
   override def takeWhile(p: A => Boolean): Stream[A] = if(p(head()))
     Stream.cons(head(), tail().takeWhile(p))
-  else tail().takeWhile(p)
+  else Stream.empty
 
   override def exists(p: A => Boolean): Boolean = p(head()) || tail().exists(p)
 
@@ -95,7 +95,7 @@ val s = Stream(1,2,3,4,5)
 
 s.take(2).toList
 s.drop(2).toList
-s.takeWhile(_ % 2 == 0).toList
+s.takeWhile(_ % 2 == 1).toList
 
 
 s.exists(_%5  == 0)
@@ -112,7 +112,7 @@ s2.forAll(_ == 1)
 // takeWhile using foldRight
 
 def takeWhile[A](stream: Stream[A])(p: A => Boolean): Stream[A] =
-  stream.foldRight(Stream.empty[A])((a, b) => if (p(a)) Stream.cons(a, b) else b)
+  stream.foldRight(Stream.empty[A])((a, b) => if (p(a)) Stream.cons(a, b) else Stream.empty)
 
 takeWhile(s)(_ % 2 == 1).toList
 
@@ -155,3 +155,12 @@ flatMap(Stream(2,3))((x) => Stream(x%2, x%3)).toList
 
 
 Stream(1,2,3,4).map(_ + 10).filter(_ % 2 == 0)
+
+val ones: Stream[Int] = Stream.cons(1, ones)
+
+ones.take(5).toList
+
+ones.exists(_%2==1)
+
+ones.map(_ + 1).exists(_ %2 == 0)
+
