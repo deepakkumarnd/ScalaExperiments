@@ -71,7 +71,7 @@ case class Cons[+A](head: () => A, tail: () => Stream[A]) extends Stream[A] {
   override def takeWhile(p: A => Boolean): Stream[A] =
     if (p(head()))
       Stream.cons(head(), tail().takeWhile(p))
-    else tail().takeWhile(p)
+    else Empty
 
   override def exists(p: A => Boolean): Boolean = p(head()) || tail().exists(p)
 
@@ -158,3 +158,44 @@ def takeWhile[A](stream: Stream[A])(p: A => Boolean): Stream[A] = {
 
 from(1).take(10).toList
 takeWhile(from(2))(_ % 2 == 0).take(10).toList
+
+def zipWith[A, B, C](s1: Stream[A], s2: Stream[B])(f: (A, B) => C): Stream[C] = {
+  unfold((s1, s2)) {
+    case (Cons(h1, t1), Cons(h2, t2)) => Some(f(h1(), h2()), (t1(), t2()))
+    case _ => None
+  }
+}
+
+zipWith(from(1), from(10).take(3))(_ + _).take(5).toList
+
+def zipWithAll[A, B, C](s1: Stream[A], s2: Stream[B])(f: (Option[A], Option[B]) => C): Stream[C] = {
+  unfold(s1 -> s2) {
+    case (Cons(h1, t1), Cons(h2, t2)) => Some(f(Some(h1()), Some(h2())), (t1(), t2()))
+    case (Empty, Cons(h2, t2)) => Some(f(None, Some(h2())), (Empty, t2()))
+    case (Cons(h1, t1), Empty) => Some(f(Some(h1()), None), (t1(), Empty))
+    case _ => None
+  }
+}
+
+def zipAll[A, B, C](s1: Stream[A], s2: Stream[B]): Stream[(Option[A], Option[B])] = zipWithAll(s1, s2)((_,_))
+
+zipAll(from(1), from(10).take(3)).take(5).toList
+
+
+zipWithAll(from(1), from(10).take(2)){
+  case (Some(a), Some(b)) => Some(a + b)
+  case (Some(a), None) => Some(a)
+  case (None, Some(b)) => Some(b)
+  case (None, None) => None
+}.take(5).toList
+
+
+
+// Exercise 5.14
+
+def startsWith[A](s1: Stream[A], s2: Stream[A]): Boolean =
+  zipAll(s1, s2)
+    .takeWhile(a => a._2.isDefined)
+    .forAll { case(a,b) => a == b }
+
+startsWith(from(1), Stream(1,2,3))
