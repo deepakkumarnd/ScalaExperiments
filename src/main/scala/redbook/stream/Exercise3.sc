@@ -199,3 +199,40 @@ def startsWith[A](s1: Stream[A], s2: Stream[A]): Boolean =
     .forAll { case(a,b) => a == b }
 
 startsWith(from(1), Stream(1,2,3))
+
+// Exercise 5.15
+
+def tails[A](stream: Stream[A]): Stream[Stream[A]] = stream match {
+  case Cons(_, tail) => Stream.cons[Stream[A]](stream, tails(tail()))
+  case Empty => Stream.empty[Stream[A]]
+}
+
+tails(Stream(1,2,3,4)).toList.map(_.toList)
+
+
+def hasSubsequence[A](stream: Stream[A], sub: Stream[A]): Boolean = {
+  tails(stream).exists(startsWith(_, sub))
+}
+
+
+//def scanRight[A, B](stream: Stream[A], zero: B)(f: (A, => B) => B): Stream[B] = stream match {
+//  case Cons(x, xs) => Stream.cons(stream.foldRight(zero)(f), scanRight(xs(), zero)(f))
+//  case Empty => Stream.cons(zero, Empty)
+//}
+
+def scanRight[A, B](stream: Stream[A], zero: B)(f: (A, => B) => B): Stream[B] = {
+  stream.foldRight((zero, Stream(zero))) { (a, b) =>
+    val p = f(a, b._1)
+    (p, Stream.cons(p, b._2))
+  }._2
+}
+
+
+scanRight(Stream(1,2,3,4,5), 0)(_  + _).toList
+
+// tails using scanRight
+
+scanRight(Stream(1,2,3,4), Stream(1,2,3,4))((a, b) => b match {
+  case Empty => Empty
+  case Cons(x, xs) => xs()
+}).toList.map(_.toList)

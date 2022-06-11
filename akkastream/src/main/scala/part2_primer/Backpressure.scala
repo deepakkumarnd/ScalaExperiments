@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Flow, Sink, Source}
 
+import java.util.concurrent.atomic.AtomicInteger
 import scala.concurrent.duration._
 
 object Backpressure extends App {
@@ -53,11 +54,28 @@ object Backpressure extends App {
   fastSource.async
     .via(bufferedFlow)
     .async
-    .throttle(1, 2 second)
+    .throttle(1, 2.second)
     .to(slowSink)
-    .run()
+//    .run()
 
   // manually triggering backpressure using throttling
   //  Source(1 to 100).throttle(2, 2 seconds).to(Sink.foreach(println)).run()
 
+  val counter1 = new AtomicInteger()
+  val counter2 = new AtomicInteger()
+
+  val done = Source(1 to 5000)
+    .map { x =>
+      counter1.incrementAndGet()
+      x * x
+    }
+    .map { x =>
+      counter2.incrementAndGet()
+      x + 1
+    }
+    .to(Sink.fold(0)((a, b) => a + 1))
+    .run()
+
+  println(counter1.get())
+  println(counter2.get())
 }
